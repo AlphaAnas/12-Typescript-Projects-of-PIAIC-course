@@ -39,3 +39,5 @@ Guess the randomly generated number within the range.
 Feedback provided for each guess (too high, too low, correct).
 Limited number of attempts to guess correctly.
 ```
+
+Game can also be found at :https://www.npmjs.com/package/@alpha_anas/number_guessing_game
