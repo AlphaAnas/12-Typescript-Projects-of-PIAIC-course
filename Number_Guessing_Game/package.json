@@ -1,15 +1,20 @@
 {
-  "name": "number_guessing_game",
-  "version": "1.0.0",
+  "name": "@alpha_anas/number_guessing_game",
+  "version": "2.0.0",
   "description": "A simple number guessing game implemented in TypeScript.",
   "main": "index.js",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alpha_anas/number_guessing_game": "^1.0.0",
     "inquirer": "^9.2.23"
   },
   "devDependencies": {
