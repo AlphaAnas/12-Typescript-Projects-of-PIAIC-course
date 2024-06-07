@@ -1,7 +1,3 @@
-#ATM System
-
-## Application Walkthrough:
-
 # ATM System
 
 ## Application Walkthrough
@@ -14,6 +10,17 @@ This ATM System application simulates basic ATM functionalities such as checking
 2. **Deposit Money**: Add a specified amount of money to your account.
 3. **Withdraw Money**: Withdraw a specified amount of money from your account.
 4. **Exit**: Exit the ATM system.
+
+## Run the Application on CLI:
+
+```
+npm i **\_\_\_**
+npx ****\_****
+```
+
+when all the dependencies are successfully installed you can build and run the project using the
+below mentioned command :
+`tsc && node index.js`
 
 ### Prerequisites
 
@@ -93,20 +100,9 @@ Before running the application, ensure you have the following installed:
    Thank you for using the ATM System. Goodbye!
    ```
 
-## Run the Application on CLI:
+## Development
 
-```
-npm i **\_\_\_**
-npx ****\_****
-```
-
-when all the dependencies are successfully installed you can build and run the project using the
-below mentioned command :
-`tsc && node index.js`
-
-### Development
-
-## Run/ Edit the Application on IDE:
+### Run/ Edit the Application on IDE:
 
         Clone or download the zip of the folder from : `LINK TO BE INSERTED HERE`
         `Then run the following commands to install the DEPENDENCIES : `
