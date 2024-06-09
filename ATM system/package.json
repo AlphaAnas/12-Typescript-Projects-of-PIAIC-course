@@ -1,9 +1,13 @@
 {
-  "name": "atm-system",
+  "name": "@alpha_anas/atm-system",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alpha_anas/atm-system": "^1.0.0",
     "inquirer": "^9.2.23"
   },
   "devDependencies": {

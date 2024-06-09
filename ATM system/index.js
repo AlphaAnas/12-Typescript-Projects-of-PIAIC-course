@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import inquirer from "inquirer";
 import chalk from "chalk";
 //requirements :
@@ -61,6 +62,9 @@ const main = async () => {
                     const floatValue = parseFloat(input);
                     if (isNaN(floatValue) || floatValue <= 0) {
                         return "Invalid input. Please enter a positive number.";
+                    }
+                    else if (floatValue > user.amount) {
+                        return "Withdrawal amount cannot be more than total balance !!";
                     }
                     return true;
                 },
