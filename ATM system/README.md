@@ -11,22 +11,25 @@ This ATM System application simulates basic ATM functionalities such as checking
 3. **Withdraw Money**: Withdraw a specified amount of money from your account.
 4. **Exit**: Exit the ATM system.
 
-For testing purposes there are two users 
-user1 : *name : anas* 
-      *account No.: : 0901* 
-      *pin :  qwe123* 
-      ,
-user2 : *name : abdullah* 
-      *account No.: : 0900* 
-      *pin :  abc123* 
+For testing purposes there are two users
+user1 : _name : anas_
+_account No.: : 0901_
+_pin : qwe123_
+,
+user2 : _name : abdullah_
+_account No.: : 0900_
+_pin : abc123_
+
 ## Run the Application on CLI:
 
 ```
 npm i @alpha_anas/atm-system
 npx @alpha_anas/atm-system
 ```
+
 ### Compiling and Running on IDE
-when all the [dependencies]{#Prerequisites} are successfully installed you can build and run the project using the
+
+when all the [dependencies](#Prerequisites) are successfully installed you can build and run the project using the
 below mentioned command :
 `tsc && node index.js`
 
