@@ -1,10 +1,39 @@
 import inquirer from "inquirer";
+import chalk from "chalk";
 //make a todo app
-const answer = await inquirer.prompt([
+async function main(name, array) {
+    let input_item = "";
+    do {
+        const input = await inquirer.prompt([
+            {
+                name: "input_item",
+                type: "input",
+                message: "Please keep adding items, and write STOP to exit",
+            },
+        ]);
+        input_item = input.input_item;
+        if (input_item !== "STOP") {
+            array.push(input.input_item);
+        }
+    } while (input_item !== "STOP");
+    console.log(`Hello ${name}, here are your items:`, array);
+}
+//////////////start of the application below////////////////////////////
+console.log(chalk.bold.bgWhite.black("                       Welcome to TO-DO app!!"));
+const name = await inquirer.prompt([
     {
-        name: "ans1",
-        type: "input",
-        message: "Enter your name",
+        name: "name",
+        type: "string",
+        message: "Please enter your name : ",
+    },
+    {
+        name: "password",
+        type: "string",
+        message: "Please enter a unique password for you : ",
     },
 ]);
-console.log(answer.ans1);
+console.log(`Welcome ${name.name}`);
+let array = [];
+setTimeout(() => {
+    main(name.name, array);
+}, 100);
