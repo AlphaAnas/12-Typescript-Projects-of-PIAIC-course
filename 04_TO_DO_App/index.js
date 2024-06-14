@@ -116,17 +116,24 @@ const input = await inquirer.prompt([
 ]);
 console.log(chalk.green.bold(`Welcome ${input.name}`));
 let array = [];
+let persons = []; // total persons that have used the app
 const person_exists = (name, password, person) => {
     let persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
     for (let i = 0; i < persons.length; i++) {
         if (persons[i].name === name && persons[i].password === password) {
             console.log("Welcome back", name);
-            person = persons[i];
+            person.name = persons[i].name;
+            person.password = persons[i].password;
+            person.array = persons[i].array;
             return i;
         }
     }
     return -1;
 };
+//check if the file exists
+if (fs.existsSync("persons.json")) {
+    const persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
+}
 let person = { name: input.name, password: input.password, array: [] };
 if (person_exists(input.name, input.password, person) !== -1) {
     console.log(person.array);
@@ -134,8 +141,14 @@ if (person_exists(input.name, input.password, person) !== -1) {
 else {
     console.log(person.array);
 }
-let persons = []; // total persons that have used the app
 await main(person);
-persons.push(person);
-fs.writeFileSync("persons.json", JSON.stringify(persons));
+const checkExistingPerson = persons.findIndex((element) => element.name === person.name && element.password === person.password);
+if (checkExistingPerson !== -1) {
+    persons[checkExistingPerson] = person;
+}
+else {
+    persons.push(person);
+}
+// here null is for the replacer and 2 is for the spacing
+fs.writeFileSync("persons.json", JSON.stringify(persons, null, 2));
 console.log("Thank you for using the app");
