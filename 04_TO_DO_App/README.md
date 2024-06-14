@@ -4,34 +4,34 @@
 
 ## Application Walkthrough
 
-This ATM System application simulates basic ATM functionalities such as checking account balance, depositing money, withdrawing money, and exiting the system.
+A TODO app which consists of user validation, item addition/ deletion, and saving user's data features.
 
 ### Features
 
-1. **Check Balance**: View the current balance in your account.
-2. **Deposit Money**: Add a specified amount of money to your account.
-3. **Withdraw Money**: Withdraw a specified amount of money from your account.
-4. **Exit**: Exit the ATM system.
+1. **Saving users's data**: if the user uses the app first time the todo app saves their data in persons.json file.
+2. **Add items**: After adding name and unique password users can add their todo items.
+3. **Delete items**: Users also have option to delete the item if they change their mind.
+4. **Exit**: Finally after adding the items if they write *stop* the app will log them out and display their items added.
 
-For testing purposes there are two users
+For testing purposes (let's say) there are two users
 
 #### user1 :
 
-      *name : anas*
-      *account No.: : 0901*
+      *name : anas
+      *items: ["apple", "mango", "banana"]*
       *pin :  qwe123*
       ,
 
 #### user2 :
 
       *name : abdullah*
-      *account No.: : 0900*
+      *items: []*
       *pin :  abc123*
 
 ## Run the Application on CLI:
 
 ```
-npm i @alpha_anas/atm-system
+npm i @alpha_anas/atm-system (yeh abhi likhna hei)
 npx @alpha_anas/atm-system
 ```
 
@@ -56,7 +56,7 @@ Before running the application, ensure you have the following installed:
 
    ```
    git clone https://github.com/AlphaAnas/Typescript-Projects-PIAIC-course.git
-   cd "ATM system"
+   cd "04_TO_DO_APP"
    ```
 
 2. **Install the dependencies**:
@@ -85,37 +85,13 @@ Before running the application, ensure you have the following installed:
 1. **Menu Display**:
 
    ```
-   Welcome to the ATM System
-   1. Check Balance
-   2. Deposit Money
-   3. Withdraw Money
-   4. Exit
+   Welcome to the TODO APP
+   1. Enter your name
+   2. Enter a password
+   3. (system validates if its a new user or an old one)
+   4. system allocates an array if its a new user else bring back the previous items that exist
    ```
 
-2. **Checking Balance**:
-
-   ```
-   Your current balance is $1000
-   ```
-
-3. **Depositing Money**:
-
-   ```
-   Enter the amount to deposit: 200
-   You have successfully deposited $200. Your new balance is $1200.
-   ```
-
-4. **Withdrawing Money**:
-
-   ```
-   Enter the amount to withdraw: 500
-   You have successfully withdrawn $500. Your new balance is $700.
-   ```
-
-5. **Exiting the System**:
-   ```
-   Thank you for using the ATM System. Goodbye!
-   ```
 
 ## Development
 
