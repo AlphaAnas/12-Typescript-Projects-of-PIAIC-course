@@ -15,6 +15,7 @@ A simulation of an ATM system that allows users to check their balance, deposit 
 
 ### 4. Project03: To-Do List
 A to-do list application that allows users to add, view, and manage their daily tasks.
+Features: User signup and login , user authetication , password validation, storage of user data in persons.json file, chalk module, inquirer module etc
 
 ### 5. Project04: Currency Converter
 An application that converts amounts from one currency to another using current exchange rates.
