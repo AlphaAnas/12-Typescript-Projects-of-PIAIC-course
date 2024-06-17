@@ -31,7 +31,7 @@ For testing purposes (let's say) there are two users
 ## Run the Application on CLI:
 
 ```
-npm i @alpha_anas/to_do_app (yeh abhi likhna hei)
+npm i @alpha_anas/to_do_app 
 npx @alpha_anas/to_do_app
 
 (and the game will start running on your Command Prompt / Terminal)
