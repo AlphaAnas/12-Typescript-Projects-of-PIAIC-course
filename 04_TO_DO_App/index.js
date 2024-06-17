@@ -19,6 +19,7 @@ async function main(person) {
             },
         ]);
         if (input.add_delete_stop.toUpperCase() === "ADD") {
+            print_items(person.array);
             const input_item = await inquirer.prompt([
                 {
                     name: "item_to_add",
@@ -41,13 +42,14 @@ async function main(person) {
                 },
             ]);
             if (input_item.item_to_add !== "STOP") {
-                array.push(input_item.item_to_add);
+                person.array.push(input_item.item_to_add);
                 index += 1;
                 console.clear();
-                print_items();
+                print_items(person.array);
             }
         }
         else if (input.add_delete_stop.toUpperCase() === "DELETE") {
+            print_items(person.array);
             const input_item = await inquirer.prompt([
                 {
                     name: "index_to_delete",
@@ -72,17 +74,19 @@ async function main(person) {
             if (input.index_to_delete === -1) {
                 continue;
             }
-            // person.array.splice(input_item, 1);
+            person.array.splice(input_item, 1);
+            console.log("Item deleted successfully");
+            console.clear();
+            print_items(person.array);
         }
         else if (input.add_delete_stop.toUpperCase() === "STOP") {
             break;
         }
     } while (input_item !== "STOP");
-    console.log(`Hello ${person.name}, here are your items:`, array);
-    person.array = array;
+    console.log(`Hello ${person.name}, here are your items:`, person.array);
     //go back to the function call
 }
-const print_items = () => {
+const print_items = (array) => {
     console.log(chalk.bold.bgWhite.black("Your items are:"));
     for (let i = 0; i < array.length; i++) {
         console.log(chalk.green.bold(`${i + 1}. ${array[i]}`));
@@ -115,38 +119,27 @@ const input = await inquirer.prompt([
     },
 ]);
 console.log(chalk.green.bold(`Welcome ${input.name}`));
-let array = [];
-let persons = []; // total persons that have used the app
-const person_exists = (name, password, person) => {
-    let persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
-    for (let i = 0; i < persons.length; i++) {
-        if (persons[i].name === name && persons[i].password === password) {
-            console.log("Welcome back", name);
-            person.name = persons[i].name;
-            person.password = persons[i].password;
-            person.array = persons[i].array;
-            return i;
-        }
-    }
-    return -1;
-};
+// let array: string[] = [];
 //check if the file exists
+let persons = []; // total persons that have used the app
 if (fs.existsSync("persons.json")) {
-    const persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
+    persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
 }
 let person = { name: input.name, password: input.password, array: [] };
-if (person_exists(input.name, input.password, person) !== -1) {
-    console.log(person.array);
-}
-else {
-    console.log(person.array);
-}
-await main(person);
+let person_exists = false;
 const checkExistingPerson = persons.findIndex((element) => element.name === person.name && element.password === person.password);
 if (checkExistingPerson !== -1) {
+    console.clear();
+    console.log(`Welcome back : ${person.name}`); // the person exists
+    person.array = persons[checkExistingPerson].array;
+    person_exists = true;
+}
+await main(person);
+// the person exists
+if (person_exists) {
     persons[checkExistingPerson] = person;
 }
-else {
+else { // add the new person to the array
     persons.push(person);
 }
 // here null is for the replacer and 2 is for the spacing
