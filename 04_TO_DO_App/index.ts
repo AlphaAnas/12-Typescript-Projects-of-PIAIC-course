@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
@@ -30,71 +32,66 @@ async function main(person: person) {
           validate: function (value: any) {
             if (value === "") {
               return "Please enter a valid item.";
-            } 
-            else if( value === "STOP"){
+            } else if (value === "STOP") {
               return "Please enter a valid item.";
-            }
-            else if (!isNaN(parseFloat(value))) {
+            } else if (!isNaN(parseFloat(value))) {
               return "You cannot enter numbers.";
-            }
-            else {
+            } else {
               return true;
             }
           },
         },
       ]);
 
-          if (input_item.item_to_add !== "STOP") {
-            person.array.push(input_item.item_to_add);
-            index += 1;
-            console.clear();
-            print_items(person.array);
-          }
+      if (input_item.item_to_add !== "STOP") {
+        person.array.push(input_item.item_to_add);
+        index += 1;
+        console.clear();
+        print_items(person.array);
+      }
     } else if (input.add_delete_stop.toUpperCase() === "DELETE") {
-          print_items(person.array);
-          const input_item = await inquirer.prompt([
-            {
-              name: "index_to_delete",
-              type: "input",
-              message:
-                "Enter the index of the item you want to delete or enter -1 to exit : ",
-              validate: function (value: any) {
-              
-                if (person.array.length === 0 && parseFloat(value) !== -1) {
-                  return "There are no items to delete";
-                } else if (
-                  isNaN(value) ||
-                  value < -1 ||
-                  value > person.array.length
-                ) {
-                  console.clear();
-                  return "Please enter a valid index.";
-                } else {
-                  return true;
-                }
-              },
-            },
-          ]); //delete the item at the index
-            if (input.index_to_delete === -1){
-              continue;
+      print_items(person.array);
+      const input_item = await inquirer.prompt([
+        {
+          name: "index_to_delete",
+          type: "input",
+          message:
+            "Enter the index of the item you want to delete or enter -1 to exit : ",
+          validate: function (value: any) {
+            if (person.array.length === 0 && parseFloat(value) !== -1) {
+              return "There are no items to delete";
+            } else if (isNaN(value) || value < -1 || value > person.array.length) {
+              console.clear();
+              return "Please enter a valid index.";
+            } else {
+              return true;
             }
-          person.array.splice(input_item, 1);
+          },
+        },
+      ]); //delete the item at the index
+      const int_index = parseInt(input_item.index_to_delete, 10) - 1; // Convert to zero-based index
+      if (int_index+1 === -1) {
+        continue; // go back to the start of the loop and ask for the next input
+      }
+      else{
+
+         //delete the item at the index
+         console.log("Item to delete: ", person.array[int_index], " at index: ", int_index + 1)
+          person.array.splice(int_index, 1);
           console.log("Item deleted successfully");
-          console.clear();
+          // console.clear();
           print_items(person.array);
-          
+      }
+    } else if (input.add_delete_stop.toUpperCase() === "STOP") {
+      break;
     }
-    
-     else if (input.add_delete_stop.toUpperCase() === "STOP") {
-       break;
-     }
   } while (input_item !== "STOP");
 
   console.log(`Hello ${person.name}, here are your items:`, person.array);
-  
+
   //go back to the function call
 }
-const print_items = (array : any) => {
+const print_items = (array: any) => {
   console.log(chalk.bold.bgWhite.black("Your items are:"));
   for (let i = 0; i < array.length; i++) {
     console.log(chalk.green.bold(`${i + 1}. ${array[i]}`));
@@ -139,13 +136,11 @@ interface person {
 
 // let array: string[] = [];
 
-
 //check if the file exists
 let persons: person[] = []; // total persons that have used the app
-if (fs.existsSync("persons.json"))
-  {
-    persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
-  }
+if (fs.existsSync("persons.json")) {
+  persons = JSON.parse(fs.readFileSync("persons.json", "utf-8"));
+}
 
 let person: person = { name: input.name, password: input.password, array: [] };
 let person_exists = false;
@@ -164,11 +159,10 @@ await main(person);
 // the person exists
 if (person_exists) {
   persons[checkExistingPerson] = person;
-}
-else {// add the new person to the array
+} else {
+  // add the new person to the array
   persons.push(person);
 }
-
 
 // here null is for the replacer and 2 is for the spacing
 fs.writeFileSync("persons.json", JSON.stringify(persons, null, 2));

@@ -2,9 +2,7 @@
   {
     "name": "anas",
     "password": "anasking",
-    "array": [
-      "anas"
-    ]
+    "array": []
   },
   {
     "name": "anas",
@@ -18,6 +16,16 @@
     "password": "abc12345",
     "array": [
       "abcdasdfas"
+    ]
+  },
+  {
+    "name": "athar",
+    "password": "atharnaveed",
+    "array": [
+      "def",
+      "jklmn",
+      "ghi",
+      "abc"
     ]
   }
 ]

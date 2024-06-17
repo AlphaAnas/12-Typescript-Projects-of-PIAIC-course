@@ -31,9 +31,8 @@ For testing purposes (let's say) there are two users
 ## Run the Application on CLI:
 
 ```
-npm i @alpha_anas/atm-system (yeh abhi likhna hei)
-npx @alpha_anas/atm-system
-```
+npm i @alpha_anas/to_do_app (yeh abhi likhna hei)
+npx @alpha_anas/to_do_app
 
 (and the game will start running on your Command Prompt / Terminal)
 
@@ -97,7 +96,7 @@ Before running the application, ensure you have the following installed:
 
 ### Run/ Edit the Application on IDE:
 
-        Clone or download the zip of the folder from : `https://github.com/AlphaAnas/Typescript-Projects-PIAIC-course/tree/main/ATM%20system`
+        Clone or download the zip of the folder from : `https://github.com/AlphaAnas/12-Typescript-Projects-of-PIAIC-course/tree/main/04_TO_DO_App`
         `Then run the following commands to install the DEPENDENCIES (if already not installed, however i have already installed and pushed the following for you in the repository): `
 
         ```

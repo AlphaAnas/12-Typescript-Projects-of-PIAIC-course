@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
@@ -59,9 +60,7 @@ async function main(person) {
                         if (person.array.length === 0 && parseFloat(value) !== -1) {
                             return "There are no items to delete";
                         }
-                        else if (isNaN(value) ||
-                            value < -1 ||
-                            value > person.array.length) {
+                        else if (isNaN(value) || value < -1 || value > person.array.length) {
                             console.clear();
                             return "Please enter a valid index.";
                         }
@@ -71,13 +70,18 @@ async function main(person) {
                     },
                 },
             ]); //delete the item at the index
-            if (input.index_to_delete === -1) {
-                continue;
+            const int_index = parseInt(input_item.index_to_delete, 10) - 1; // Convert to zero-based index
+            if (int_index + 1 === -1) {
+                continue; // go back to the start of the loop and ask for the next input
             }
-            person.array.splice(input_item, 1);
-            console.log("Item deleted successfully");
-            console.clear();
-            print_items(person.array);
+            else {
+                //delete the item at the index
+                console.log("Item to delete: ", person.array[int_index], " at index: ", int_index + 1);
+                person.array.splice(int_index, 1);
+                console.log("Item deleted successfully");
+                // console.clear();
+                print_items(person.array);
+            }
         }
         else if (input.add_delete_stop.toUpperCase() === "STOP") {
             break;
@@ -139,7 +143,8 @@ await main(person);
 if (person_exists) {
     persons[checkExistingPerson] = person;
 }
-else { // add the new person to the array
+else {
+    // add the new person to the array
     persons.push(person);
 }
 // here null is for the replacer and 2 is for the spacing
