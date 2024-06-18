@@ -16,8 +16,8 @@ A currency converter application made in Typescript made using Inquirer module, 
 ## Run the Application on CLI:
 
 ```
-npm i @alpha_anas/to_do_app 
-npx @alpha_anas/to_do_app
+npm i @alpha_anas/05_currency_converter
+npx @alpha_anas/05_currency_converter
 
 (and the game will start running on your Command Prompt / Terminal)
 
