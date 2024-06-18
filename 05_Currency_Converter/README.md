@@ -80,7 +80,7 @@ Before running the application, ensure you have the following installed:
 
 ## Development
 
-### Run/ Edit the Application on IDE:
+### Run/ Edit the Application on IDE to add more options:
 
         Clone or download the zip of the folder from : `https://github.com/AlphaAnas/12-Typescript-Projects-of-PIAIC-course/tree/main/04_TO_DO_App`
         `Then run the following commands to install the DEPENDENCIES (if already not installed, however i have already installed and pushed the following for you in the repository): `

@@ -18,18 +18,49 @@ const input = await inquirer.prompt(
             name: 'from',
             type: 'list',
             message: 'Select currency to convert from: ',
-            choices: Object.keys(currency)
+            choices: Object.keys(currency),
+            validate: function(input)
+            {
+             if (currency[input] === undefined) {
+                 return 'Please enter a valid currency';
+             
+            }
+            return true;
+            }
         },
         {
             name: 'to',
             type: 'list',
             message: 'Select currency to convert to: ',
-            choices: Object.keys(currency)
+            choices: Object.keys(currency),
+            validate: function(input)
+            {
+                if (currency[input] === undefined) {
+                    return 'Please enter a valid currency';
+                }
+                
+                return true;
+            }
+            
         },
         {
             name: 'amount',
             type: 'number',
-            message: 'Enter amount to convert: '
+            message: 'Enter amount to convert: ',
+            validate: function(input)
+            {
+                if (isNaN(input)) {
+                    return 'Please enter a valid amount in integers';
+                }
+                else if (input < 0) {
+                    return 'Please enter a positive amount';
+                }
+                else if (input === 0) {
+                    return 'Please enter a non-zero amount';
+                }
+                return true;
+            
+            }
         }
      
 
