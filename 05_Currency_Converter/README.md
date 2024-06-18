@@ -40,7 +40,7 @@ Before running the application, ensure you have the following installed:
 
    ```
    git clone https://github.com/AlphaAnas/Typescript-Projects-PIAIC-course.git
-   cd "04_TO_DO_APP"
+   cd "05_Currency_Converter"
    ```
 
 2. **Install the dependencies**:
@@ -82,7 +82,7 @@ Before running the application, ensure you have the following installed:
 
 ### Run/ Edit the Application on IDE to add more options:
 
-        Clone or download the zip of the folder from : `https://github.com/AlphaAnas/12-Typescript-Projects-of-PIAIC-course/tree/main/04_TO_DO_App`
+        Clone or download the zip of the folder from : `https://github.com/AlphaAnas/12-Typescript-Projects-of-PIAIC-course/tree/main/05_Currency_Converter`
         `Then run the following commands to install the DEPENDENCIES (if already not installed, however i have already installed and pushed the following for you in the repository): `
 
         ```
