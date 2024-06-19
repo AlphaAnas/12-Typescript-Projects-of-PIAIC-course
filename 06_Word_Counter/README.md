@@ -14,9 +14,10 @@ This project is a simple word counter application written in TypeScript. The app
 1. **Word Counting**: Counts the number of words in a given text file.
 2. **Detailed Report**: Provides a breakdown of word counts, unique words, and punctuation handling.
 3. **Error Handling**: Ensures the input is valid and handles edge cases.
+
 ## Run the Application on CLI:
 
-```
+
 npm i @alpha_anas/06_word_counter
 npx @alpha_anas/06_word_counter
 
@@ -53,7 +54,7 @@ Before running the application, ensure you have the following installed:
    tsc --init   (to install tsconfig.json)
    npm init -y (to install package.json) (keep pressing enter to make a general tsconfig.json file)
 
-   
+
 ### Important changes to make (note I have already made this following changes for you, so you do not have to make the same, however remember to make the same in your own version)
 
    ```
