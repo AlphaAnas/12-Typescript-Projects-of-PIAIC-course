@@ -40,10 +40,10 @@ Before running the application, ensure you have the following installed:
 
 1. **Clone the repository**:
 
-   ```
+   
    git clone "https://github.com/AlphaAnas/12-Typescript-Projects-of-PIAIC-course"
    cd "06_Word_Counter"
-   ```
+  
 2. **Install the dependencies**:
 
    ```
