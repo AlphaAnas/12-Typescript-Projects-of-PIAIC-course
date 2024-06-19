@@ -46,12 +46,14 @@ Before running the application, ensure you have the following installed:
   
 2. **Install the dependencies**:
 
-   ```
+ 
    npm install (to install node modules folder)
    npm install inquirer
    npm i --save-dev @types/inquirer
    tsc --init   (to install tsconfig.json)
    npm init -y (to install package.json) (keep pressing enter to make a general tsconfig.json file)
+
+   
 ### Important changes to make (note I have already made this following changes for you, so you do not have to make the same, however remember to make the same in your own version)
 
    ```
