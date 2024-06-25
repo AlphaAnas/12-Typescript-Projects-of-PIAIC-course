@@ -1,4 +1,4 @@
-#! usr/bin/env node
+#! /usr/bin/env node
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
@@ -13,6 +13,7 @@ class Student {
     name;
     enollment_year;
     major;
+    courses;
     //_--------------------------------------------//
     // constructor
     constructor(name, enrollment_year, major) {
@@ -22,11 +23,12 @@ class Student {
         this.id = this.generate_id(enrollment_year);
         console.log("ID generated: ", this.id);
         this.balance = 0;
+        this.courses = [];
     }
     generate_id(enrollment_year) {
         console.log("Generating ID:" + Student.id_count);
         Student.id_count += 1;
-        return ((Student.id_count).toString().padStart(5, "0") +
+        return (Student.id_count.toString().padStart(5, "0") +
             (enrollment_year % 100).toString().padStart(2, "0"));
     }
 }
@@ -62,7 +64,7 @@ class Stu_Manag_Sys {
             return;
         }
     }
-    // get the student details here 
+    // get the student details here
     async get_student_details(available_majors) {
         const st_input = await inquirer.prompt([
             {
@@ -157,46 +159,64 @@ class Stu_Manag_Sys {
         console.log("this index is :" + index);
         return index;
     }
+    //**************************/
+    // public enrollCourse(course: { name: string; fee: number }) {
+    //   this.courses.push(course);
+    //   this.balance += course.fee;
+    // }
     //************************ */
     async commit(index) {
         // save the data to a file
-        console.log("Commiting data called");
+        // console.log("Commiting data called");
         // Get the current file URL
         const __filename = fileURLToPath(import.meta.url);
         // Get the directory name of the current file
         const __dirname = path.dirname(__filename);
-        console.log("Current directory:", __dirname);
+        // console.log("Current directory:", __dirname);
         const exists = fs.existsSync(path.join(__dirname, "records", "students.json"));
         console.log(exists);
         if (exists) {
             fs.writeFileSync(path.join(__dirname, "records", "students.json"), JSON.stringify(this.students, null, 2));
-            console.log(chalk.green.bold(`Data saved for ${this.students[index].name}`));
+            console.log(chalk.green.bold(`Data saved for ${this.students[index].name} with ID ${this.students[index].id}`));
         }
         else {
             fs.mkdirSync(path.join(__dirname, "records"));
             fs.writeFileSync(path.join(__dirname, "records", "students.json"), JSON.stringify(this.students, null, 2));
-            console.log(chalk.green.bold(`Data saved for ${this.students[this.students.length - 1].name}`));
+            console.log(chalk.green.bold(`Data saved for ${this.students[this.students.length - 1].name} with ID ${this.students[this.students.length - 1].id}`));
         }
     }
     async main() {
-        const available_majors = ["computer science", "computer engineering", "social science"];
+        const available_majors = [
+            "computer science",
+            "computer engineering",
+            "social science",
+        ];
+        const courses = [
+            { name: "Mathematics", fee: 500 },
+            { name: "Physics", fee: 600 },
+            { name: "Chemistry", fee: 700 },
+        ];
         // while (true) {
+        console.log(chalk.bgGray.redBright("======================================"));
+        console.log(chalk.bgYellow.redBright("Welcome to Student Management System"));
+        console.log(chalk.bgGray.redBright("======================================"));
         const input = await inquirer.prompt([
             {
                 name: "option",
                 type: "list",
                 message: "Select your action : ",
                 choices: [
-                    "Add/Enroll a Student",
-                    "View Balance",
+                    "Register a Student",
+                    "Enroll in course",
+                    "View Pending Balance",
                     "Pay Tution Fees",
-                    "show Details / status",
+                    "show All Students",
                     "Exit",
                 ],
             },
         ]);
         switch (input.option) {
-            case "Add/Enroll a Student":
+            case "Register a Student":
                 const std_input = await inquirer.prompt([
                     {
                         name: "name",
@@ -219,7 +239,7 @@ class Stu_Manag_Sys {
                             else {
                                 return true;
                             }
-                        }
+                        },
                     },
                     {
                         name: "year",
@@ -238,7 +258,7 @@ class Stu_Manag_Sys {
                             else {
                                 return true;
                             }
-                        }
+                        },
                     },
                     {
                         name: "major",
@@ -258,7 +278,7 @@ class Stu_Manag_Sys {
                             else {
                                 return true;
                             }
-                        }
+                        },
                     },
                 ]);
                 // add the new student in the list
@@ -267,7 +287,51 @@ class Stu_Manag_Sys {
                 this.students.push(student);
                 this.commit(this.students.length - 1);
                 break;
-            case "View Balance":
+            case "Enroll in course":
+                const st_index = await this.get_student_details(available_majors);
+                if (st_index === -1) {
+                    console.log(chalk.redBright("Student does not exists "));
+                    // continue;
+                }
+                else {
+                    console.log(chalk.greenBright("Student exists"));
+                    console.log(chalk.greenBright("Student Details : "));
+                    console.table(this.students[st_index]);
+                    const course_input = await inquirer.prompt([
+                        {
+                            name: "course",
+                            type: "list",
+                            choices: courses.map((course) => ({
+                                name: `${course.name} ($${course.fee})`,
+                                value: course,
+                            })),
+                            message: "Select your desired course: ",
+                            validate: (input) => {
+                                if (input.trim() === "") {
+                                    return "Invalid Course";
+                                }
+                                else if (!isNaN(input)) {
+                                    return "Invalid Course, enter a string course";
+                                }
+                                else if (input.length < 3) {
+                                    return "Course too short";
+                                }
+                                else {
+                                    return true;
+                                }
+                            },
+                        },
+                    ]);
+                    //save the new details in students' array
+                    this.students[st_index].courses.push(course_input.course);
+                    this.students[st_index].courses[this.students[st_index].courses.length - 1].paid = false;
+                    this.students[st_index].balance += course_input.course.fee;
+                    console.log(chalk.greenBright("Course added successfully"));
+                    this.commit(st_index);
+                    console.table(this.students[st_index]);
+                }
+                break;
+            case "View Pending Balance":
                 const index = await this.get_student_details(available_majors);
                 if (index === -1) {
                     console.log(chalk.redBright("Student does not exists "));
@@ -277,6 +341,7 @@ class Stu_Manag_Sys {
                     console.log(chalk.greenBright("Student exists"));
                     console.log(chalk.greenBright("Student Details : "));
                     console.table(this.students[index]);
+                    console.log(`Your pending amount is : ${this.students[index].balance}`);
                 }
                 break;
             case "Pay Tution Fees":
@@ -293,44 +358,56 @@ class Stu_Manag_Sys {
                         break;
                     }
                     else {
-                        const fees = await inquirer.prompt([
+                        const course = await inquirer.prompt([
                             {
-                                name: "fees",
-                                type: "number",
-                                message: "Enter the amount you want to pay : ",
-                                validate: (input) => {
-                                    if (isNaN(input)) {
-                                        console.log(chalk.redBright("Please Enter integer input!"));
-                                    }
-                                    else if (input > this.students[id].balance) {
-                                        console.log("Amount cannot be greater than pending amount");
-                                    }
-                                    else if (input.trim === "") {
-                                        console.log(chalk.redBright("Please enter valid input"));
-                                    }
-                                    else if (input < 0) {
-                                        console.log(chalk.redBright("Amount cannot be negative"));
-                                    }
-                                    else {
-                                        return true;
-                                    }
-                                },
+                                name: "course",
+                                type: "list",
+                                choices: this.students[id].courses.map((course) => ({
+                                    name: `${course.name} ($${course.fee})`,
+                                    value: course,
+                                })),
+                                message: "Select the course you want to pay for : ",
                             },
                         ]);
-                        this.students[id].balance -= fees.fees;
-                        console.log(chalk.greenBright("Fees added successfully"));
-                        this.commit(id);
+                        if (course.course.paid) {
+                            console.log(chalk.redBright("Course already paid for"));
+                            break;
+                        }
+                        let fees = course.course.fee;
+                        console.log(`Your pending amount is : ${fees}`);
+                        const payFees = await inquirer.prompt([
+                            {
+                                name: "confirm",
+                                type: "confirm",
+                                message: "Do you want to pay the fees?",
+                            },
+                        ]);
+                        if (!payFees.confirm) {
+                            console.log(chalk.redBright("Payment cancelled"));
+                            break;
+                        }
+                        else {
+                            course.course.paid = true;
+                            this.students[id].balance -= fees;
+                            console.log(chalk.greenBright("Fees added successfully"));
+                            this.commit(id);
+                        }
                     }
                 }
                 break;
-            case "show Details / status":
-                console.table(this.students);
+            case "show All Students":
+                // Create a copy of students array with courses formatted
+                const formattedStudents = this.students.map((student) => ({
+                    ...student,
+                    courses: student.courses.map((course) => `${course.name} ($${course.fee})`),
+                }));
+                console.table(formattedStudents);
                 break;
             case "Exit":
                 console.clear();
                 console.log("Please Wait!");
                 setTimeout(() => {
-                    console.log(chalk.bgGray.black("Exiting..."));
+                    console.log(chalk.bgGray.black("Exited successfully !"));
                 }, 1500);
                 break;
             default:
