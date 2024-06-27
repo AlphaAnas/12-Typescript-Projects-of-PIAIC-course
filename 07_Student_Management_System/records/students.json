@@ -1,0 +1,40 @@
+[
+  {
+    "balance": 1200,
+    "id": "1000124",
+    "name": "aleesha",
+    "enollment_year": "2024",
+    "major": "social science",
+    "courses": [
+      {
+        "name": "Physics",
+        "fee": 600,
+        "paid": false
+      }
+    ]
+  },
+  {
+    "balance": 400,
+    "id": "1000224",
+    "name": "Anas",
+    "enollment_year": "2024",
+    "major": "computer engineering",
+    "courses": [
+      {
+        "name": "Physics",
+        "fee": 600,
+        "paid": true
+      },
+      {
+        "name": "Physics",
+        "fee": 600,
+        "paid": false
+      },
+      {
+        "name": "Physics",
+        "fee": 600,
+        "paid": false
+      }
+    ]
+  }
+]

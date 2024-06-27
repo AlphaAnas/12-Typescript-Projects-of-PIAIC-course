@@ -6,8 +6,8 @@ This project is a simple console-based Student Management System written in Type
 ## Features
 
 1. **User Data Saving**: Save and load student data to/from a JSON file.
-2. **Add Student**: Add new students with unique IDs and other details.
-3. **Enroll in Courses (to be developed)**: Enroll students in available courses.
+2. **Add Student**: Add new students with unique IDs, default balance and other details.
+3. **Enroll in Courses**: Enroll students in available courses.
 4. **View Balance**: Check the tuition balance of a student.
 5. **Pay Tuition Fees**: Pay the tuition fees for a student.
 6. **Show Student Status**: Display the details of a student, including name, ID, courses enrolled, and balance.
@@ -24,6 +24,7 @@ This project is a simple console-based Student Management System written in Type
     'tsc && node index.js'
     ```
 2. Follow the prompts to add a new student by providing the necessary details such as name, enrollment year, major, etc.
+Note: A student enrolled has default balance of 1000 in his/her cart
 
 ### Paying Tuition Fees
 

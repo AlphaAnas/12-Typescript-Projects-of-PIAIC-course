@@ -1,6 +1,6 @@
 {
   "name": "@alpha_anas/07_student_management_system",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alpha_anas/07_student_management_system": "^1.1.0",
     "inquirer": "^9.2.23"
   },
   "devDependencies": {
