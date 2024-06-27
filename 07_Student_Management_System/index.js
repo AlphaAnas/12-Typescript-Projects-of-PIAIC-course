@@ -178,288 +178,296 @@ class Stu_Manag_Sys {
         console.log(chalk.bgGray.redBright("======================================"));
         console.log(chalk.bgWhite.redBright("Welcome to Student Management System"));
         console.log(chalk.bgGray.redBright("======================================"));
-        const input = await inquirer.prompt([
-            {
-                name: "option",
-                type: "list",
-                message: "Select your action : ",
-                choices: [
-                    "Register a Student",
-                    "Enroll/ Unenroll in course",
-                    "View Pending Balance",
-                    "Pay Tution Fees",
-                    "show All Students",
-                    "Exit",
-                ],
-            },
-        ]);
-        switch (input.option) {
-            case "Register a Student":
-                const std_input = await inquirer.prompt([
-                    {
-                        name: "name",
-                        type: "input",
-                        message: "Enter Student Name : ",
-                        validate: (input) => {
-                            if (input.trim() === "") {
-                                return "Invalid Name";
-                            }
-                            else if (!isNaN(input)) {
-                                return "Invalid Name, enter a string name";
-                            }
-                            else if (input.length < 3) {
-                                return "Name too short";
-                            }
-                            //check if it contains special characters
-                            else if (!/^[a-zA-Z ]+$/.test(input)) {
-                                return "Invalid Name, enter a valid name";
-                            }
-                            else {
-                                return true;
-                            }
-                        },
-                    },
-                    {
-                        name: "year",
-                        type: "input",
-                        message: "Enter Enrollment Year : ",
-                        validate: (input) => {
-                            if (isNaN(input)) {
-                                return "Invalid Year, enter a number";
-                            }
-                            else if (input.length !== 4) {
-                                return "Invalid Year, lenght should be 4 digits";
-                            }
-                            else if (input < 2000 || input > 2024) {
-                                return "Invalid Year, enter a year between 2000 and 2024";
-                            }
-                            else {
-                                return true;
-                            }
-                        },
-                    },
-                    {
-                        name: "major",
-                        type: "list",
-                        choices: available_majors,
-                        message: "Enter Major : ",
-                        validate: (input) => {
-                            if (input.trim() === "") {
-                                return "Invalid Major";
-                            }
-                            else if (!isNaN(input)) {
-                                return "Invalid Major, enter a string major";
-                            }
-                            else if (input.length < 3) {
-                                return "Major too short";
-                            }
-                            else {
-                                return true;
-                            }
-                        },
-                    },
-                ]);
-                // add the new student in the list
-                const { name, year, major } = std_input;
-                const student = new Student(name, year, major);
-                this.students.push(student);
-                this.commit(this.students.length - 1);
-                break;
-            case "Enroll/ Unenroll in course":
-                const st_index = await this.get_student_details(available_majors);
-                if (st_index === -1) {
-                    console.log(chalk.redBright("Student does not exists "));
-                    // continue;
-                }
-                else {
-                    console.log(chalk.greenBright("Student exists"));
-                    console.log(chalk.greenBright("Student Details : "));
-                    const student = this.students[st_index];
-                    const formattedStudents = {
-                        ...student,
-                        courses: student.courses.map((course) => `${course.name} ($${course.fee})`),
-                    };
-                    const option = await inquirer.prompt([
+        // keep asking for input until user selects exit
+        while (true) {
+            const input = await inquirer.prompt([
+                {
+                    name: "option",
+                    type: "list",
+                    message: "Select your action : ",
+                    choices: [
+                        "Register a Student",
+                        "Enroll/ Unenroll in course",
+                        "View Pending Balance",
+                        "Pay Tution Fees",
+                        "show All Students",
+                        "Exit",
+                    ],
+                },
+            ]);
+            switch (input.option) {
+                case "Register a Student":
+                    const std_input = await inquirer.prompt([
                         {
-                            name: "option",
+                            name: "name",
+                            type: "input",
+                            message: "Enter Student Name : ",
+                            validate: (input) => {
+                                if (input.trim() === "") {
+                                    return "Invalid Name";
+                                }
+                                else if (!isNaN(input)) {
+                                    return "Invalid Name, enter a string name";
+                                }
+                                else if (input.length < 3) {
+                                    return "Name too short";
+                                }
+                                //check if it contains special characters
+                                else if (!/^[a-zA-Z ]+$/.test(input)) {
+                                    return "Invalid Name, enter a valid name";
+                                }
+                                else {
+                                    return true;
+                                }
+                            },
+                        },
+                        {
+                            name: "year",
+                            type: "input",
+                            message: "Enter Enrollment Year : ",
+                            validate: (input) => {
+                                if (isNaN(input)) {
+                                    return "Invalid Year, enter a number";
+                                }
+                                else if (input.length !== 4) {
+                                    return "Invalid Year, lenght should be 4 digits";
+                                }
+                                else if (input < 2000 || input > 2024) {
+                                    return "Invalid Year, enter a year between 2000 and 2024";
+                                }
+                                else {
+                                    return true;
+                                }
+                            },
+                        },
+                        {
+                            name: "major",
                             type: "list",
-                            choices: ["Enroll", "Unenroll"],
-                            message: "Select your action : ",
+                            choices: available_majors,
+                            message: "Enter Major : ",
+                            validate: (input) => {
+                                if (input.trim() === "") {
+                                    return "Invalid Major";
+                                }
+                                else if (!isNaN(input)) {
+                                    return "Invalid Major, enter a string major";
+                                }
+                                else if (input.length < 3) {
+                                    return "Major too short";
+                                }
+                                else {
+                                    return true;
+                                }
+                            },
                         },
                     ]);
-                    if (option.option === "Unenroll") {
-                        if (student.courses.length === 0) {
-                            console.log(chalk.redBright("No courses to unenroll"));
-                            break;
-                        }
-                        const course_input = await inquirer.prompt([
-                            {
-                                name: "course",
-                                type: "list",
-                                choices: student.courses.map((course) => ({
-                                    name: `${course.name} ($${course.fee})`,
-                                    value: course,
-                                })),
-                                message: "Select your desired course: ",
-                            },
-                        ]);
-                        const index = student.courses.findIndex((course) => course.name.toLowerCase() === course_input.course.name.toLowerCase());
-                        student.courses.splice(index, 1);
-                        student.balance += course_input.course.fee;
-                        console.log(chalk.greenBright("Course removed successfully"));
-                        this.commit(st_index);
-                        console.table([formattedStudents]);
-                    }
-                    else if (option.option === "Enroll") {
-                        console.table([formattedStudents]);
-                        const course_input = await inquirer.prompt([
-                            {
-                                name: "course",
-                                type: "list",
-                                choices: courses.map((course) => ({
-                                    name: `${course.name} ($${course.fee})`,
-                                    value: course,
-                                })),
-                                message: "Select your desired course: ",
-                                validate: (input) => {
-                                    if (input.trim() === "") {
-                                        return "Invalid Course";
-                                    }
-                                    else if (!isNaN(input)) {
-                                        return "Invalid Course, enter a string course";
-                                    }
-                                    else if (input.length < 3) {
-                                        return "Course too short";
-                                    }
-                                    // else if (this.students[st_index].courses.find( (course) => course.name.toLowerCase() === course_input.course.name.toLowerCase()))
-                                    //     {
-                                    //       return "Course already enrolled";
-                                    //     }
-                                    else {
-                                        return true;
-                                    }
-                                },
-                            },
-                        ]);
-                        if (course_input.course.name.toLowerCase()
-                            ===
-                                this.students[st_index].courses.find((course) => course.name.toLowerCase())?.name.toLowerCase()) {
-                            console.log(chalk.redBright("Course already enrolled"));
-                            break;
-                        }
-                        //save the new details in students' array
-                        this.students[st_index].courses.push(course_input.course);
-                        this.students[st_index].courses[this.students[st_index].courses.length - 1].paid = false;
-                        console.log(chalk.greenBright("Course added successfully"));
-                        this.commit(st_index);
-                        // after the student is enrolled display it
-                        const enrolled_formatted_student = {
-                            ...this.students[st_index], courses: this.students[st_index].courses.map((course) => `${course.name} ($${course.fee})`),
-                        };
-                        console.table([enrolled_formatted_student]);
-                    }
-                }
-                break;
-            case "View Pending Balance":
-                const index = await this.get_student_details(available_majors);
-                if (index === -1) {
-                    console.log(chalk.redBright("Student does not exists "));
-                    // continue;
-                }
-                else {
-                    console.log(chalk.greenBright("Student exists"));
-                    console.log(chalk.greenBright("Student Details : "));
-                    const student = this.students[index];
-                    const formatted_students = {
-                        ...student, courses: student.courses.map((course) => `${course.name} $${course.fee}`),
-                    };
-                    console.table([formatted_students]);
-                    const pending_amount = this.students[index].courses.reduce((total, course) => total + course.fee, 0);
-                    console.log(`Your pending amount is : ${pending_amount}`);
-                }
-                break;
-            case "Pay Tution Fees":
-                const id = await this.get_student_details(available_majors);
-                if (id === -1) {
-                    console.log(chalk.redBright("Student does not exists "));
-                    // continue;
-                }
-                else {
-                    console.log(chalk.bgGray.blackBright("Student exists"));
-                    const student = this.students[id];
-                    const formatted_students = {
-                        ...student,
-                        courses: student.courses.map((course) => `${course.name} $${course.fee}`),
-                    };
-                    console.table([formatted_students]);
-                    const pending_amount = 1000 - formatted_students.balance;
-                    console.log(`Your pending amount is : ${pending_amount}`);
-                    if (this.students[id].balance === 0) {
-                        console.log(chalk.greenBright("Please recharge your account to pay fees, free version expired"));
-                        break;
+                    // add the new student in the list
+                    const { name, year, major } = std_input;
+                    const student = new Student(name, year, major);
+                    this.students.push(student);
+                    this.commit(this.students.length - 1);
+                    break;
+                case "Enroll/ Unenroll in course":
+                    const st_index = await this.get_student_details(available_majors);
+                    if (st_index === -1) {
+                        console.log(chalk.redBright("Student does not exists "));
+                        // continue;
                     }
                     else {
-                        const unpaid_courses = this.students[id].courses.filter((course) => !course.paid);
-                        const course = await inquirer.prompt([
+                        console.log(chalk.greenBright("Student exists"));
+                        console.log(chalk.greenBright("Student Details : "));
+                        const student = this.students[st_index];
+                        const formattedStudents = {
+                            ...student,
+                            courses: student.courses.map((course) => `${course.name} ($${course.fee})`),
+                        };
+                        const option = await inquirer.prompt([
                             {
-                                name: "course",
+                                name: "option",
                                 type: "list",
-                                choices: unpaid_courses.map((course) => ({
-                                    name: `${course.name} ($${course.fee})`,
-                                    value: course,
-                                })),
-                                message: "Select the course you want to pay for : ",
+                                choices: ["Enroll", "Unenroll"],
+                                message: "Select your action : ",
                             },
                         ]);
-                        if (course.course.paid) {
-                            console.log(chalk.redBright("Course already paid for"));
-                            break;
+                        if (option.option === "Unenroll") {
+                            if (student.courses.length === 0) {
+                                console.log(chalk.redBright("No courses to unenroll"));
+                                break;
+                            }
+                            const course_input = await inquirer.prompt([
+                                {
+                                    name: "course",
+                                    type: "list",
+                                    choices: student.courses.map((course) => ({
+                                        name: `${course.name} ($${course.fee})`,
+                                        value: course,
+                                    })),
+                                    message: "Select your desired course: ",
+                                },
+                            ]);
+                            const index = student.courses.findIndex((course) => course.name.toLowerCase() ===
+                                course_input.course.name.toLowerCase());
+                            student.courses.splice(index, 1);
+                            student.balance += course_input.course.fee;
+                            console.log(chalk.greenBright("Course removed successfully"));
+                            this.commit(st_index);
+                            console.table([formattedStudents]);
                         }
-                        let fees = course.course.fee;
-                        console.log(`Your pending amount is : ${fees}`);
-                        const payFees = await inquirer.prompt([
-                            {
-                                name: "confirm",
-                                type: "confirm",
-                                message: "Do you want to pay the fees?",
-                            },
-                        ]);
-                        if (!payFees.confirm) {
-                            console.log(chalk.redBright("Payment cancelled"));
-                            break;
+                        else if (option.option === "Enroll") {
+                            console.table([formattedStudents]);
+                            const course_input = await inquirer.prompt([
+                                {
+                                    name: "course",
+                                    type: "list",
+                                    choices: courses.map((course) => ({
+                                        name: `${course.name} ($${course.fee})`,
+                                        value: course,
+                                    })),
+                                    message: "Select your desired course: ",
+                                    validate: (input) => {
+                                        if (input.trim() === "") {
+                                            return "Invalid Course";
+                                        }
+                                        else if (!isNaN(input)) {
+                                            return "Invalid Course, enter a string course";
+                                        }
+                                        else if (input.length < 3) {
+                                            return "Course too short";
+                                        }
+                                        // else if (this.students[st_index].courses.find( (course) => course.name.toLowerCase() === course_input.course.name.toLowerCase()))
+                                        //     {
+                                        //       return "Course already enrolled";
+                                        //     }
+                                        else {
+                                            return true;
+                                        }
+                                    },
+                                },
+                            ]);
+                            if (course_input.course.name.toLowerCase() ===
+                                this.students[st_index].courses
+                                    .find((course) => course.name.toLowerCase())
+                                    ?.name.toLowerCase()) {
+                                console.log(chalk.redBright("Course already enrolled"));
+                                break;
+                            }
+                            //save the new details in students' array
+                            this.students[st_index].courses.push(course_input.course);
+                            this.students[st_index].courses[this.students[st_index].courses.length - 1].paid = false;
+                            console.log(chalk.greenBright("Course added successfully"));
+                            this.commit(st_index);
+                            // after the student is enrolled display it
+                            const enrolled_formatted_student = {
+                                ...this.students[st_index],
+                                courses: this.students[st_index].courses.map((course) => `${course.name} ($${course.fee})`),
+                            };
+                            console.table([enrolled_formatted_student]);
                         }
-                        else if (this.students[id].balance < fees) {
-                            console.log(chalk.redBright("Insufficient balance"));
+                    }
+                    break;
+                case "View Pending Balance":
+                    const index = await this.get_student_details(available_majors);
+                    if (index === -1) {
+                        console.log(chalk.redBright("Student does not exists "));
+                        // continue;
+                    }
+                    else {
+                        console.log(chalk.greenBright("Student exists"));
+                        console.log(chalk.greenBright("Student Details : "));
+                        const student = this.students[index];
+                        const formatted_students = {
+                            ...student,
+                            courses: student.courses.map((course) => `${course.name} $${course.fee}`),
+                        };
+                        console.table([formatted_students]);
+                        const pending_amount = this.students[index].courses.reduce((total, course) => total + course.fee, 0);
+                        console.log(`Your pending amount is : ${pending_amount}`);
+                    }
+                    break;
+                case "Pay Tution Fees":
+                    const id = await this.get_student_details(available_majors);
+                    if (id === -1) {
+                        console.log(chalk.redBright("Student does not exists "));
+                        // continue;
+                    }
+                    else {
+                        console.log(chalk.bgGray.blackBright("Student exists"));
+                        const student = this.students[id];
+                        const formatted_students = {
+                            ...student,
+                            courses: student.courses.map((course) => `${course.name} $${course.fee}`),
+                        };
+                        console.table([formatted_students]);
+                        const pending_amount = 1000 - formatted_students.balance;
+                        console.log(`Your pending amount is : ${pending_amount}`);
+                        if (this.students[id].balance === 0) {
+                            console.log(chalk.greenBright("Please recharge your account to pay fees, free version expired"));
                             break;
                         }
                         else {
-                            course.course.paid = true;
-                            this.students[id].balance -= fees;
-                            console.log(chalk.greenBright("Fees added successfully"));
-                            this.commit(id);
+                            const unpaid_courses = this.students[id].courses.filter((course) => !course.paid);
+                            const course = await inquirer.prompt([
+                                {
+                                    name: "course",
+                                    type: "list",
+                                    choices: unpaid_courses.map((course) => ({
+                                        name: `${course.name} ($${course.fee})`,
+                                        value: course,
+                                    })),
+                                    message: "Select the course you want to pay for : ",
+                                },
+                            ]);
+                            if (course.course.paid) {
+                                console.log(chalk.redBright("Course already paid for"));
+                                break;
+                            }
+                            let fees = course.course.fee;
+                            console.log(`Your pending amount is : ${fees}`);
+                            const payFees = await inquirer.prompt([
+                                {
+                                    name: "confirm",
+                                    type: "confirm",
+                                    message: "Do you want to pay the fees?",
+                                },
+                            ]);
+                            if (!payFees.confirm) {
+                                console.log(chalk.redBright("Payment cancelled"));
+                                break;
+                            }
+                            else if (this.students[id].balance < fees) {
+                                console.log(chalk.redBright("Insufficient balance"));
+                                break;
+                            }
+                            else {
+                                course.course.paid = true;
+                                this.students[id].balance -= fees;
+                                console.log(chalk.greenBright("Fees added successfully"));
+                                this.commit(id);
+                            }
                         }
                     }
-                }
-                break;
-            case "show All Students":
-                // Create a copy of students array with courses formatted
-                const formattedStudents = this.students.map((student) => ({
-                    ...student,
-                    courses: student.courses.map((course) => `${course.name} ($${course.fee})`),
-                }));
-                console.table(formattedStudents);
-                break;
-            case "Exit":
-                console.clear();
-                console.log("Please Wait!");
-                setTimeout(() => {
-                    console.log(chalk.bgGray.black("Exited successfully !"));
-                }, 1500);
-                break;
-            default:
-                console.log("Invalid Option");
-        } //switch statement ends here***
-        // } // while loop ends
+                    break;
+                case "show All Students":
+                    // Create a copy of students array with courses formatted
+                    const formattedStudents = this.students.map((student) => ({
+                        ...student,
+                        courses: student.courses.map((course) => `${course.name} ($${course.fee})`),
+                    }));
+                    console.table(formattedStudents);
+                    break;
+                case "Exit":
+                    console.clear();
+                    console.log("Please Wait!");
+                    setTimeout(() => {
+                        console.log(chalk.bgGray.black("Exited successfully !"));
+                    }, 1500);
+                    process.exit(0);
+                    break;
+                default:
+                    console.log("Invalid Option");
+            } //switch statement ends here***
+            // break;
+        } // while loop ends
     }
 }
 const sms = new Stu_Manag_Sys();

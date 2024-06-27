@@ -1,0 +1,24 @@
+[
+  {
+    "balance": 1000,
+    "id": "1000124",
+    "name": "anas",
+    "enollment_year": "2024",
+    "major": "computer science",
+    "courses": []
+  },
+  {
+    "balance": 400,
+    "id": "1000224",
+    "name": "anas",
+    "enollment_year": "2024",
+    "major": "computer science",
+    "courses": [
+      {
+        "name": "Physics",
+        "fee": 600,
+        "paid": true
+      }
+    ]
+  }
+]
