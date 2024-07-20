@@ -462,7 +462,7 @@ class Stu_Manag_Sys {
                         console.log(chalk.bgGray.black("Exited successfully !"));
                     }, 1500);
                     process.exit(0);
-                    break;
+                // break;
                 default:
                     console.log("Invalid Option");
             } //switch statement ends here***
