@@ -67,7 +67,7 @@ const input = await inquirer.prompt(
     ],
 );
 
-
-    const { from, to, amount } = input;
-    const result =(amount / currency[from] ) * currency[to];
-    console.log(chalk.bgGreen.yellowBright.bold(`${amount} ${from} is equal to ${ result.toFixed(2) } ${to}`));
+    console.log(input.from);
+    // const { from, to, amount } = input;
+    // const result =(amount / currency[from] ) * currency[to];
+    // console.log(chalk.bgGreen.yellowBright.bold(`${amount} ${from} is equal to ${ result.toFixed(2) } ${to}`));
